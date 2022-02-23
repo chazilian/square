@@ -1,4 +1,4 @@
-package com.foobear.square.data.entity
+package com.foobear.square.data.entity.responses
 
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -12,13 +12,13 @@ data class Employee(
     var fullName: String,
 
     @Nullable @SerializedName("phone_number")
-    var phoneNumber: String?,
+    var phoneNumber: String? = "Phone number pending",
 
     @NonNull @SerializedName("email_address")
     var emailAddress: String,
 
     @Nullable
-    var biography: String?,
+    var biography: String? = "Biography pending",
 
     @Nullable @SerializedName("photo_url_small")
     var photoSmall: String?,

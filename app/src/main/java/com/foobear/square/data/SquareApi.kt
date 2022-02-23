@@ -1,6 +1,6 @@
 package com.foobear.square.data
 
-import com.foobear.square.data.entity.Employees
+import com.foobear.square.data.entity.responses.Employees
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Response

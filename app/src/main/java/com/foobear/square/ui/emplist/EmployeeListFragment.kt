@@ -2,6 +2,7 @@ package com.foobear.square.ui.emplist
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foobear.square.R
-import com.foobear.square.data.entity.Employee
+import com.foobear.square.data.entity.responses.Employee
 import com.foobear.square.databinding.EmployeeListFragmentBinding
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -57,7 +58,7 @@ class EmployeeListFragment : Fragment(), KodeinAware {
 
         viewModel.getIsEmpty().observe(viewLifecycleOwner, Observer { result ->
             binding.tvEmptyList.visibility = if (result){View.VISIBLE} else{ View.GONE}
-            binding.rvEmpList.visibility = if (!result){View.VISIBLE} else{ View.GONE}
+            binding.rvEmpList.visibility = if (!result){View.VISIBLE} else{ View.INVISIBLE}
         })
 
         viewModel.getIsRefreshing().observe(viewLifecycleOwner, Observer { result ->
@@ -66,6 +67,7 @@ class EmployeeListFragment : Fragment(), KodeinAware {
 
         binding.srlContainer.setOnRefreshListener {
             binding.tvEmptyList.visibility = View.GONE
+            binding.rvEmpList.visibility = View.INVISIBLE
             viewModel.refreshEmployeeList()
             binding.srlContainer.isRefreshing = false
         }

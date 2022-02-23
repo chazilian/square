@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.foobear.square.R
-import com.foobear.square.data.entity.Employee
+import com.foobear.square.data.entity.responses.Employee
 
 class EmployeeListAdapter(var employees: ArrayList<Employee>): RecyclerView.Adapter<EmployeeListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeListViewHolder {
