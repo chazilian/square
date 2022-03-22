@@ -2,6 +2,7 @@ package com.foobear.square
 
 import android.app.Application
 import com.foobear.square.data.SquareApi
+import com.foobear.square.data.SquareDatabase
 import com.foobear.square.data.repo.EmployeeRepository
 import com.foobear.square.data.repo.EmployeeRepositoryImpl
 import com.foobear.square.network.datasource.EmployeeListDataSource
@@ -22,6 +23,8 @@ class SquareApplication: Application(), KodeinAware {
         import(androidXModule(this@SquareApplication))
 
         bind() from singleton { SquareApi() }
+        bind() from singleton { SquareDatabase(instance()) }
+        bind() from singleton { instance<SquareDatabase>().employeeDao() }
 
         bind() from provider { EmployeeListViewModelFactory(instance()) }
         bind() from singleton { EmployeeListViewModel(instance()) }
@@ -31,7 +34,7 @@ class SquareApplication: Application(), KodeinAware {
         }
 
         bind<EmployeeRepository>() with singleton {
-            EmployeeRepositoryImpl(instance())
+            EmployeeRepositoryImpl(instance(), instance())
         }
     }
 

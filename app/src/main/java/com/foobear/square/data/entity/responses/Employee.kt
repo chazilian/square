@@ -2,10 +2,13 @@ package com.foobear.square.data.entity.responses
 
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class Employee(
-    @NonNull @SerializedName("uuid")
+    @PrimaryKey @NonNull @SerializedName("uuid")
     var id: String,
 
     @NonNull @SerializedName("full_name")
@@ -30,7 +33,10 @@ data class Employee(
     var team: String,
 
     @NonNull @SerializedName("employee_type")
-    var employeeType: EmpTypeEnumEntity
+    var employeeType: EmpTypeEnumEntity,
+
+    @NonNull
+    var IngestedAt: String
 
 ){
 }
