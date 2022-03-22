@@ -7,17 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foobear.square.R
 import com.foobear.square.data.entity.responses.Employee
 import com.foobear.square.databinding.EmployeeListFragmentBinding
+import com.foobear.square.ui.OnEmployeeClickListener
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class EmployeeListFragment : Fragment(), KodeinAware {
+class EmployeeListFragment : Fragment(), OnEmployeeClickListener, KodeinAware {
 
     override val kodein by closestKodein()
 
@@ -26,6 +30,11 @@ class EmployeeListFragment : Fragment(), KodeinAware {
     private lateinit var viewModel: EmployeeListViewModel
 
     private lateinit var binding: EmployeeListFragmentBinding
+
+    private lateinit var adapter: EmployeeListAdapter
+
+    private lateinit var navController: NavController
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -37,6 +46,7 @@ class EmployeeListFragment : Fragment(), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = EmployeeListFragmentBinding.bind(view)
+        navController = Navigation.findNavController(view)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -47,7 +57,7 @@ class EmployeeListFragment : Fragment(), KodeinAware {
     private fun initRecyclerView(){
         binding.rvEmpList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvEmpList.itemAnimator = DefaultItemAnimator()
-        val adapter = EmployeeListAdapter(arrayListOf<Employee>())
+        adapter = EmployeeListAdapter(arrayListOf<Employee>(), this)
         binding.rvEmpList.adapter = adapter
         viewModel.employees.observe(viewLifecycleOwner, Observer { result ->
             if(!result.isNullOrEmpty()) {
@@ -71,5 +81,11 @@ class EmployeeListFragment : Fragment(), KodeinAware {
             viewModel.refreshEmployeeList()
             binding.srlContainer.isRefreshing = false
         }
+    }
+
+    override fun onClick(position: Int) {
+        val employee = adapter.getItem(position)
+        val bundle = bundleOf("empId" to employee.id)
+        navController.navigate(R.id.action_employeeListFragment_to_employeeDetailsFragment, bundle)
     }
 }

@@ -5,15 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.foobear.square.R
 import com.foobear.square.data.entity.responses.Employee
+import com.foobear.square.ui.OnEmployeeClickListener
 
-class EmployeeListAdapter(var employees: ArrayList<Employee>): RecyclerView.Adapter<EmployeeListViewHolder>() {
+class EmployeeListAdapter(
+    var employees: ArrayList<Employee>,
+    val onEmployeeClickListener: OnEmployeeClickListener): RecyclerView.Adapter<EmployeeListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EmployeeListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.employee_holder, parent, false)
-        return EmployeeListViewHolder(view)
+        return EmployeeListViewHolder(view, onEmployeeClickListener)
     }
 
     override fun onBindViewHolder(holder: EmployeeListViewHolder, position: Int) {
@@ -36,12 +40,27 @@ class EmployeeListAdapter(var employees: ArrayList<Employee>): RecyclerView.Adap
         employees.clear()
         employees.addAll(list)
     }
+
+    fun getItem(position: Int): Employee {
+        return employees[position]
+    }
 }
 
-class EmployeeListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+class EmployeeListViewHolder(
+    itemView: View,
+    onEmployeeClickListener: OnEmployeeClickListener
+): RecyclerView.ViewHolder(itemView){
     val picture: ImageView = itemView.findViewById(R.id.iv_emp_image)
     val name: TextView = itemView.findViewById(R.id.tv_fullname)
     val team: TextView = itemView.findViewById(R.id.tv_team)
     val empType: TextView = itemView.findViewById(R.id.tv_empType)
+    val empRow: ConstraintLayout = itemView.findViewById(R.id.cl_emp_row)
+
+
+    init {
+        empRow.setOnClickListener {
+            onEmployeeClickListener.onClick(adapterPosition)
+        }
+    }
 
 }

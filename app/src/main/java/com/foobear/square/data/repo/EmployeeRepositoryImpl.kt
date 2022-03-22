@@ -30,11 +30,7 @@ class EmployeeRepositoryImpl(
 
 
     override suspend fun getEmployeeList(): Resource<List<Employee>> {
-        if(getEmployeeCache()){
-            return Resource.success(emptyList())
-        } else {
-            return employeeListDataSource.fetchEmployeeList()
-        }
+        return employeeListDataSource.fetchEmployeeList()
     }
 
     override fun getEmployeeListRoom(): LiveData<List<Employee>> {
