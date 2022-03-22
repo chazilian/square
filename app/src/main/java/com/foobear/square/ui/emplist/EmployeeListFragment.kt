@@ -49,7 +49,7 @@ class EmployeeListFragment : Fragment(), KodeinAware {
         binding.rvEmpList.itemAnimator = DefaultItemAnimator()
         val adapter = EmployeeListAdapter(arrayListOf<Employee>())
         binding.rvEmpList.adapter = adapter
-        viewModel.getEmpList().observe(viewLifecycleOwner, Observer { result ->
+        viewModel.employees.observe(viewLifecycleOwner, Observer { result ->
             if(!result.isNullOrEmpty()) {
                 adapter.setList(result.sortedBy { it.team })
                 adapter.notifyDataSetChanged()
